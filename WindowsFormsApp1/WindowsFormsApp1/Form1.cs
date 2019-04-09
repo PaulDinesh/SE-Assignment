@@ -19,6 +19,7 @@ namespace WindowsFormsApp1
             
         }
 
+        //STEP 1
         private void button1_Click(object sender, EventArgs e)
         {
             //Folder Browser Dialog Box
@@ -27,12 +28,14 @@ namespace WindowsFormsApp1
             string source = fbd.SelectedPath;
             
 
-            //// If directory does not exist, create it. 
+            // If directory does not exist, create it. 
             //if (!Directory.Exists(target))
             //{
             //    Directory.CreateDirectory(target);
             //}
             
+            //STEP 2
+
             //Get directories
             string[] files = Directory.GetFiles(source);
 
