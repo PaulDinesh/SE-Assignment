@@ -36,7 +36,7 @@ namespace WindowsFormsApp1
             int j;
 
             // string path = @"C:\Users\paul dinesh\Desktop\Data\data.txt";
-            StreamWriter outputFile = new StreamWriter(@"C:\Users\paul dinesh\Desktop\sorted.txt");
+            StreamWriter sw = new StreamWriter(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt");
 
             foreach (string file in files)
             {
@@ -66,16 +66,24 @@ namespace WindowsFormsApp1
                             c++;
                     }
                     if (c == 1)
-                        Console.WriteLine(num);
+                        //Console.WriteLine(num);
+                        sw.WriteLine(num);
                     else
-                        Console.WriteLine("{0},{1} ", num, c);
+                        //Console.WriteLine("{0},{1} ", num, c);
+                        sw.WriteLine("{0},{1} ", num, c);
 
 
-                    outputFile.WriteLine(num, c);
+
                 }
+                
                 sr.Close();
+                
+                
 
             }
+            sw.Close();
+            Console.WriteLine(File.ReadAllText(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt"));
         }
+        
     }
 }
