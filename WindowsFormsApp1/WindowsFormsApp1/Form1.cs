@@ -27,33 +27,38 @@ namespace WindowsFormsApp1
             string source = fbd.SelectedPath;
             string target = @"\sortedFiles";
             target = string.Format("{0}{1}", source, target);
-
-            // If directory does not exist, create it. 
+             // If directory does not exist, create it. 
             if (!Directory.Exists(target))
             {
                 Directory.CreateDirectory(target);
             }
-
-            //Get directories
-            string[] files = Directory.GetFiles(source);
-            string str;
+            string str,destFile="";
             char[] delimiterChars = { ' ', ',', '.', ':', '\t', ';' };
             string[] List;
             int j;
 
-            // string path = @"C:\Users\paul dinesh\Desktop\Data\data.txt";
-            StreamWriter sw = new StreamWriter(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt");
-
-            foreach (string file in files)
+            //Get directories
+            string[] files = Directory.GetFiles(source);
+           foreach (string file in files)
             {
+                string ext = Path.GetExtension(file);
+                //Checks for text file
+                if (ext == ".txt")
+                {
+                    //Assign the file name of that instance
+                    string name = Path.GetFileName(file);
+                    string newFileName = "sorted";
+                    //Asigning new name 
+                    newFileName = string.Format("{0}{1}", newFileName, name);
+
+                    //File copy 
+                    string sourceFile = Path.Combine(source, name);
+                    destFile = Path.Combine(target, newFileName);
+                    File.Copy(sourceFile, destFile, true);
+                }
                 StreamReader sr = new StreamReader(file);
-
-                //for (int i = 0; i < 2; i++)
-                // {
+                StreamWriter sw = new StreamWriter(destFile);
                 str = sr.ReadLine();
-                //     Console.WriteLine(Regex.Match(str, @"\d+.+\d").Value);
-                //     Console.WriteLine( "--------------");
-
                 //Spliting of line into words
                 List = str.Split(delimiterChars);
                 // }
@@ -72,43 +77,25 @@ namespace WindowsFormsApp1
                             c++;
                     }
                     if (c == 1)
-                        //Console.WriteLine(num);
+                    {
+                        Console.WriteLine(num);
                         sw.WriteLine(num);
+                    }
                     else
-                        //Console.WriteLine("{0},{1} ", num, c);
+                    {
+                        Console.WriteLine("{0},{1} ", num, c);
                         sw.WriteLine("{0},{1} ", num, c);
-
-
-
+                    }
                 }
 
                 sr.Close();
-
-
-
+                sw.Close();
             }
-            sw.Close();
-            Console.WriteLine(File.ReadAllText(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt"));
-            // FileInfo f1 = new FileInfo(source);
+            
+            //Console.WriteLine(File.ReadAllText(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt"));
+            
 
-            foreach (string file in files)
-            {
-                string ext = Path.GetExtension(file);
-                //Checks for text file
-                if (ext == ".txt")
-                {
-                    //Assign the file name of that instance
-                    string name = Path.GetFileName(file);
-                    string newFileName = "sorted";
-                    //Asigning new name 
-                    newFileName = string.Format("{0}{1}", newFileName, name);
-
-                    //File copy 
-                    string sourceFile = Path.Combine(source, name);
-                    string destFile = Path.Combine(target, newFileName);
-                    File.Copy(sourceFile, destFile, true);
-                }
-            }
+            
 
         }
     }
