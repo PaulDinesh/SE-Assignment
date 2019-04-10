@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace WindowsFormsApp1
 {
@@ -20,7 +21,61 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Button created
+            //Folder Browser Dialog Box
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.ShowDialog();
+            string source = fbd.SelectedPath;
+            //Get Files stores the path of all files in the selected path
+            //C:\Users\paul dinesh\Desktop\Data\data.txt
+            //C:\Users\paul dinesh\Desktop\Data\asdf.txt
+            string[] files = Directory.GetFiles(source);
+
+            string str;
+            char[] delimiterChars = { ' ', ',', '.', ':', '\t', ';' };
+            string[] List;
+            int j;
+
+            // string path = @"C:\Users\paul dinesh\Desktop\Data\data.txt";
+            StreamWriter outputFile = new StreamWriter(@"C:\Users\paul dinesh\Desktop\sorted.txt");
+
+            foreach (string file in files)
+            {
+                StreamReader sr = new StreamReader(file);
+
+                //for (int i = 0; i < 2; i++)
+                // {
+                str = sr.ReadLine();
+                //     Console.WriteLine(Regex.Match(str, @"\d+.+\d").Value);
+                //     Console.WriteLine( "--------------");
+
+                //Spliting of line into words
+                List = str.Split(delimiterChars);
+                // }
+                //Sorting of the array
+                Array.Sort(List);
+                //No. of occurence
+                for (int i = 0; i < List.Length; i = j)
+                {
+                    string num = List[i];
+                    int c = 1;
+                    for (j = i + 1; j < List.Length; j++)
+                    {
+                        if (List[j] != num)
+                            break;
+                        else
+                            c++;
+                    }
+                    if (c == 1)
+                        Console.WriteLine(num);
+                    else
+                        Console.WriteLine("{0},{1} ", num, c);
+
+
+                    outputFile.WriteLine(num, c);
+                }
+                sr.Close();
+
+            }
         }
     }
 }
