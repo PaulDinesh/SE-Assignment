@@ -25,15 +25,14 @@ namespace WindowsFormsApp1
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowDialog();
             string source = fbd.SelectedPath;
-            string target = @"\sortedFiles";
-            target = string.Format("{0}{1}", source, target);
+            
 
             //// If directory does not exist, create it. 
             //if (!Directory.Exists(target))
             //{
             //    Directory.CreateDirectory(target);
             //}
-
+            
             //Get directories
             string[] files = Directory.GetFiles(source);
 
@@ -53,7 +52,7 @@ namespace WindowsFormsApp1
                 
                //File copy 
                     string sourceFile = Path.Combine(source, name);
-                    string destFile = Path.Combine(target, newFileName);
+                    string destFile = Path.Combine(source, newFileName);
                     File.Copy(sourceFile, destFile, true);
                 }
             }
