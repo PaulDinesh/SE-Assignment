@@ -28,11 +28,11 @@ namespace WindowsFormsApp1
             string target = @"\sortedFiles";
             target = string.Format("{0}{1}", source, target);
 
-            //// If directory does not exist, create it. 
-            //if (!Directory.Exists(target))
-            //{
-            //    Directory.CreateDirectory(target);
-            //}
+            // If directory does not exist, create it. 
+            if (!Directory.Exists(target))
+            {
+                Directory.CreateDirectory(target);
+            }
 
             //Get directories
             string[] files = Directory.GetFiles(source);
