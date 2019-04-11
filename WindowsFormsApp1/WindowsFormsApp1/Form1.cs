@@ -84,6 +84,11 @@ namespace WindowsFormsApp1
             sw.Close();
             Console.WriteLine(File.ReadAllText(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt"));
         }
-        
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+         //   Listing_of_Directories_and_files f2 = new Listing_of_Directories_and_files();
+           // f2.ShowDialog();
+        }
     }
 }
