@@ -18,28 +18,32 @@ namespace WindowsFormsApp1
             InitializeComponent();
             
         }
-
+        int i = -1;
+        string[] a = { "Please Select a file", "Please Select a file", "Please Select a file" };
         private void button1_Click(object sender, EventArgs e)
         {
             //Folder Browser Dialog Box
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowDialog();
+            i = i + 1;
             string source = fbd.SelectedPath;
+            Console.WriteLine(a[i]);
             string target = @"\sortedFiles";
             target = string.Format("{0}{1}", source, target);
-             // If directory does not exist, create it. 
+            a[i] = target;
+            // If directory does not exist, create it. 
             if (!Directory.Exists(target))
             {
                 Directory.CreateDirectory(target);
             }
-            string str,destFile="";
+            string str, destFile = "";
             char[] delimiterChars = { ' ', ',', '.', ':', '\t', ';' };
             string[] List;
             int j;
 
             //Get directories
             string[] files = Directory.GetFiles(source);
-           foreach (string file in files)
+            foreach (string file in files)
             {
                 string ext = Path.GetExtension(file);
                 //Checks for text file
@@ -58,8 +62,8 @@ namespace WindowsFormsApp1
                 }
                 StreamReader sr = new StreamReader(file);
                 StreamWriter sw = new StreamWriter(destFile);
-                str = sr.ReadLine();
-                //Spliting of line into words
+                str = sr.ReadToEnd();
+                //Spliting of line into w   ords
                 List = str.Split(delimiterChars);
                 // }
                 //Sorting of the array
@@ -78,12 +82,12 @@ namespace WindowsFormsApp1
                     }
                     if (c == 1)
                     {
-                        Console.WriteLine(num);
+                        // Console.WriteLine(num);
                         sw.WriteLine(num);
                     }
                     else
                     {
-                        Console.WriteLine("{0},{1} ", num, c);
+                        //Console.WriteLine("{0},{1} ", num, c);
                         sw.WriteLine("{0},{1} ", num, c);
                     }
                 }
@@ -91,12 +95,91 @@ namespace WindowsFormsApp1
                 sr.Close();
                 sw.Close();
             }
-            
-            //Console.WriteLine(File.ReadAllText(@"C:\Users\paul dinesh\Desktop\Data\Sort\sorted.txt"));
-            
 
             
 
+
+
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            listBox1.Items.Clear();
+            for (int j = 0; j < a.Length; j++)
+            {
+                if (a[j] != "Please Select a file")
+                {
+
+                    listBox1.Items.Add(a[j].ToString());
+                }
+            }
+
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            listBox3.Items.Clear();
+
+            for (int j = 0; j < a.Length; j++)
+            {
+                if (a[j] != "Please Select a file")
+                {
+                    string[] files = Directory.GetFiles(a[j]);
+                    foreach (string file2 in files)
+                    {
+                        string name2 = Path.GetFileName(file2);
+                        listBox3.Items.Add(name2.ToString());
+                    }
+                }
+            }
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string Folder = listBox1.SelectedItem.ToString();
+            string[] Files1 = Directory.GetFiles(Folder);
+            listBox2.Items.Clear();
+            foreach (string file in Files1)
+            {
+                string name1 = Path.GetFileName(file);
+                listBox2.Items.Add(name1.ToString());
+            }
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            /*
+            string search = textBox1.Text;
+            for (int j = 0; j < a.Length; j++)
+            {
+                string searchfile = Path.GetFileName(a[j]);
+                string[] linesArr = File.ReadAllLines(searchfile);
+                foreach (string s in linesArr)
+                {
+                    if (s.Contains(search))
+                    {
+                        listBox4.Items.Add(s.ToString());
+                    }
+                }
+            }
+*/
         }
     }
 }
