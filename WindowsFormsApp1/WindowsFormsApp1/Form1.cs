@@ -181,5 +181,88 @@ namespace WindowsFormsApp1
             }
 */
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            /* Calculator f2 = new Calculator();
+             f2.ShowDialog();*///Folder Browser Dialog Box
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.ShowDialog();
+            string source = fbd.SelectedPath;
+            //Get directories
+            string[] files = Directory.GetFiles(source);
+            //var numbers = new List<string>();
+            string str = " ";
+            string[] List = { "" };
+            decimal[] result = { 1 };
+            foreach (string file in files)
+            {
+                string ext = Path.GetExtension(file);
+                //Checks for text file
+                if (ext == ".calc")
+                {
+
+                    StreamReader sr = new StreamReader(file);
+                    while (sr.Peek() > 0)
+                    {
+                        str = sr.ReadLine();
+                        List = str.Split(' ');
+
+                        for (int i = 0; i < List.Length; i++)
+                        {
+                            int j, k;
+                            switch (List[i])
+                            {
+                                case "+":
+                                    j = i - 1;
+                                    k = i + 1;
+                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
+                                    result[0] = Convert.ToDecimal(List[j]) + Convert.ToDecimal(List[k]);
+                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                    break;
+                                case "-":
+                                    j = i - 1;
+                                    k = i + 1;
+                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
+                                    result[0] = Convert.ToDecimal(List[j]) - Convert.ToDecimal(List[k]);
+                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                    break;
+                                case "*":
+                                    j = i - 1;
+                                    k = i + 1;
+                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
+                                    result[0] = Convert.ToDecimal(List[j]) * Convert.ToDecimal(List[k]);
+                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                    break;
+                                case "/":
+                                    j = i - 1;
+                                    k = i + 1;
+                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
+                                    result[0] = Convert.ToDecimal(List[j]) / Convert.ToDecimal(List[k]);
+                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                    break;
+                                case "%":
+                                    j = i - 1;
+                                    k = i + 1;
+                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
+                                    result[0] = Convert.ToDecimal(List[j]) % Convert.ToDecimal(List[k]);
+                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                    break;
+                                case "^":
+                                    j = i - 1;
+                                    k = i + 1;
+                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
+                                    double resul = Math.Pow(Convert.ToDouble(List[j]), Convert.ToDouble(List[k]));
+                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], resul);
+                                    break;
+
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        }
     }
 }
