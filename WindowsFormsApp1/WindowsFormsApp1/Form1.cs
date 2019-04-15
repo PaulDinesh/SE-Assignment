@@ -16,7 +16,7 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
-            
+
         }
         int i = -1;
         string[] a = { "Please Select a file", "Please Select a file", "Please Select a file" };
@@ -41,7 +41,7 @@ namespace WindowsFormsApp1
             string[] List;
             int j;
 
-            //Get directories
+            //Get all files in directories
             string[] files = Directory.GetFiles(source);
             foreach (string file in files)
             {
@@ -59,47 +59,43 @@ namespace WindowsFormsApp1
                     string sourceFile = Path.Combine(source, name);
                     destFile = Path.Combine(target, newFileName);
                     File.Copy(sourceFile, destFile, true);
-                }
-                StreamReader sr = new StreamReader(file);
-                StreamWriter sw = new StreamWriter(destFile);
-                str = sr.ReadToEnd();
-                //Spliting of line into w   ords
-                List = str.Split(delimiterChars);
-                // }
-                //Sorting of the array
-                Array.Sort(List);
-                //No. of occurence
-                for (int i = 0; i < List.Length; i = j)
-                {
-                    string num = List[i];
-                    int c = 1;
-                    for (j = i + 1; j < List.Length; j++)
+
+                    StreamReader sr = new StreamReader(file);
+                    StreamWriter sw = new StreamWriter(destFile);
+                    str = sr.ReadToEnd();
+                    //Spliting of line into words
+                    List = str.Split(delimiterChars);
+                    // }
+                    //Sorting of the array
+                    Array.Sort(List);
+                    //No. of occurence
+                    for (int i = 0; i < List.Length; i = j)
                     {
-                        if (List[j] != num)
-                            break;
+                        string num = List[i];
+                        int c = 1;
+                        for (j = i + 1; j < List.Length; j++)
+                        {
+                            if (List[j] != num)
+                                break;
+                            else
+                                c++;
+                        }
+                        if (c == 1)
+                        {
+                            // Console.WriteLine(num);
+                            sw.WriteLine(num);
+                        }
                         else
-                            c++;
+                        {
+                            //Console.WriteLine("{0},{1} ", num, c);
+                            sw.WriteLine("{0},{1} ", num, c);
+                        }
                     }
-                    if (c == 1)
-                    {
-                        // Console.WriteLine(num);
-                        sw.WriteLine(num);
-                    }
-                    else
-                    {
-                        //Console.WriteLine("{0},{1} ", num, c);
-                        sw.WriteLine("{0},{1} ", num, c);
-                    }
+
+                    sr.Close();
+                    sw.Close();
                 }
-
-                sr.Close();
-                sw.Close();
             }
-
-            
-
-
-
 
         }
 
@@ -184,85 +180,115 @@ namespace WindowsFormsApp1
 
         private void button4_Click(object sender, EventArgs e)
         {
+
             /* Calculator f2 = new Calculator();
-             f2.ShowDialog();*///Folder Browser Dialog Box
+             f2.ShowDialog();*/
+            string source = @"C:\Users\paul dinesh\Desktop\Calculator";
+
+            //Folder Browser Dialog Box
             FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.ShowDialog();
-            string source = fbd.SelectedPath;
-            //Get directories
-            string[] files = Directory.GetFiles(source);
-            //var numbers = new List<string>();
-            string str = " ";
-            string[] List = { "" };
-            decimal[] result = { 1 };
-            foreach (string file in files)
+            fbd.Description = "Please select a directory";
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
-                string ext = Path.GetExtension(file);
-                //Checks for text file
-                if (ext == ".calc")
+                source = fbd.SelectedPath;
+                MessageBox.Show(source);
+
+
+                //Get directories
+                string[] files = Directory.GetFiles(source);
+
+                string answerfile = DateTime.Now.ToString("HH.mm.ss dddd, dd-MMMM-yyyy ");
+                answerfile = string.Format("{0}\\{1}.answ", source, answerfile);
+
+                string str = " ";
+                string[] List = { "" };
+                decimal result = 1;
+                using (StreamWriter sw = File.CreateText(answerfile))
                 {
-
-                    StreamReader sr = new StreamReader(file);
-                    while (sr.Peek() > 0)
+                    sw.WriteLine("---------------------------------------");
+                    sw.WriteLine("            AnswerFile");
+                }
+                foreach (string file in files)
+                {
+                    string ext = Path.GetExtension(file);
+                    //Checks for .calc file
+                    if (ext == ".calc")
                     {
-                        str = sr.ReadLine();
-                        List = str.Split(' ');
 
-                        for (int i = 0; i < List.Length; i++)
+                        StreamReader sr = new StreamReader(file);
+                        string Cname = Path.GetFileName(file);
+                        //     answerfile = string.Format("{0}-{1}",Cname,answerfile);
+
+                        // StreamWriter sw = new StreamWriter(answerfile);
+                        using (StreamWriter sw = new StreamWriter(answerfile, true))
                         {
-                            int j, k;
-                            switch (List[i])
+                            sw.WriteLine("---------------------------------------");
+                            while (sr.Peek() > 0)
                             {
-                                case "+":
-                                    j = i - 1;
-                                    k = i + 1;
-                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
-                                    result[0] = Convert.ToDecimal(List[j]) + Convert.ToDecimal(List[k]);
-                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
-                                    break;
-                                case "-":
-                                    j = i - 1;
-                                    k = i + 1;
-                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
-                                    result[0] = Convert.ToDecimal(List[j]) - Convert.ToDecimal(List[k]);
-                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
-                                    break;
-                                case "*":
-                                    j = i - 1;
-                                    k = i + 1;
-                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
-                                    result[0] = Convert.ToDecimal(List[j]) * Convert.ToDecimal(List[k]);
-                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
-                                    break;
-                                case "/":
-                                    j = i - 1;
-                                    k = i + 1;
-                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
-                                    result[0] = Convert.ToDecimal(List[j]) / Convert.ToDecimal(List[k]);
-                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
-                                    break;
-                                case "%":
-                                    j = i - 1;
-                                    k = i + 1;
-                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
-                                    result[0] = Convert.ToDecimal(List[j]) % Convert.ToDecimal(List[k]);
-                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
-                                    break;
-                                case "^":
-                                    j = i - 1;
-                                    k = i + 1;
-                                    //  Console.WriteLine(Convert.ToDecimal(List[j]));
-                                    double resul = Math.Pow(Convert.ToDouble(List[j]), Convert.ToDouble(List[k]));
-                                    Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], resul);
-                                    break;
+                                str = sr.ReadLine();
+                                List = str.Split(' ');
 
+                                for (int i = 0; i < List.Length; i++)
+                                {
+                                    int j, k;
+                                    switch (List[i])
+                                    {
+                                        case "+":
+                                            j = i - 1;
+                                            k = i + 1;
+                                            result = Convert.ToDecimal(List[j]) + Convert.ToDecimal(List[k]);
+                                            //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
+                                            break;
+                                        case "-":
+                                            j = i - 1;
+                                            k = i + 1;
+                                            result = Convert.ToDecimal(List[j]) - Convert.ToDecimal(List[k]);
+                                            //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
+                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
+                                            break;
+                                        case "*":
+                                            j = i - 1;
+                                            k = i + 1;
+                                            result = Convert.ToDecimal(List[j]) * Convert.ToDecimal(List[k]);
+                                            // Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result);
+                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
+                                            break;
+                                        case "/":
+                                            j = i - 1;
+                                            k = i + 1;
+                                            result = Convert.ToDecimal(List[j]) / Convert.ToDecimal(List[k]);
+                                            //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result);
+                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
+                                            break;
+                                        case "%":
+                                            j = i - 1;
+                                            k = i + 1;
+                                            result = Convert.ToDecimal(List[j]) % Convert.ToDecimal(List[k]);
+                                            //  Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result);
+                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
+                                            break;
+                                        case "^":
+                                            j = i - 1;
+                                            k = i + 1;
+                                            double resul = Math.Pow(Convert.ToDouble(List[j]), Convert.ToDouble(List[k]));
+                                            // Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], resul);
+                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(resul, 2));
+                                            break;
+
+                                    }
+
+                                }
                             }
 
+                            sr.Close();
+                            sw.Close();
                         }
                     }
                 }
-            }
+                MessageBox.Show("Calculations are Completed");
 
+            }
         }
     }
 }
