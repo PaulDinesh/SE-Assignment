@@ -19,23 +19,24 @@ namespace WindowsFormsApp1
 
         }
         int i = -1;
-        string[] a = { "Please Select a file", "Please Select a file", "Please Select a file" };
+        string[] targetfolder = { "Please Select a file", "Please Select a file", "Please Select a file" };
         private void button1_Click(object sender, EventArgs e)
         {
             //Folder Browser Dialog Box
             FolderBrowserDialog fbd = new FolderBrowserDialog();
             fbd.ShowDialog();
-            i = i + 1;
             string source = fbd.SelectedPath;
-            Console.WriteLine(a[i]);
             string target = @"\sortedFiles";
+            //Formatting the target folder name
             target = string.Format("{0}{1}", source, target);
-            a[i] = target;
+            i = i + 1;
+            targetfolder[i] = target;
             // If directory does not exist, create it. 
             if (!Directory.Exists(target))
             {
                 Directory.CreateDirectory(target);
             }
+
             string str, destFile = "";
             char[] delimiterChars = { ' ', ',', '.', ':', '\t', ';' };
             string[] List;
@@ -44,51 +45,49 @@ namespace WindowsFormsApp1
             //Get all files in directories
             string[] files = Directory.GetFiles(source);
             foreach (string file in files)
-            {
+            {//extracts the extension
                 string ext = Path.GetExtension(file);
                 //Checks for text file
                 if (ext == ".txt")
                 {
                     //Assign the file name of that instance
                     string name = Path.GetFileName(file);
+                    
                     string newFileName = "sorted";
                     //Asigning new name 
                     newFileName = string.Format("{0}{1}", newFileName, name);
-
                     //File copy 
                     string sourceFile = Path.Combine(source, name);
                     destFile = Path.Combine(target, newFileName);
                     File.Copy(sourceFile, destFile, true);
-
+                    
                     StreamReader sr = new StreamReader(file);
                     StreamWriter sw = new StreamWriter(destFile);
                     str = sr.ReadToEnd();
                     //Spliting of line into words
                     List = str.Split(delimiterChars);
-                    // }
+                    
                     //Sorting of the array
                     Array.Sort(List);
                     //No. of occurence
                     for (int i = 0; i < List.Length; i = j)
                     {
                         string num = List[i];
-                        int c = 1;
+                        int counter = 1;
                         for (j = i + 1; j < List.Length; j++)
                         {
                             if (List[j] != num)
                                 break;
                             else
-                                c++;
+                                counter++;
                         }
-                        if (c == 1)
+                        if (counter == 1)
                         {
-                            // Console.WriteLine(num);
                             sw.WriteLine(num);
                         }
                         else
                         {
-                            //Console.WriteLine("{0},{1} ", num, c);
-                            sw.WriteLine("{0},{1} ", num, c);
+                            sw.WriteLine("{0},{1} ", num, counter);
                         }
                     }
 
@@ -103,12 +102,12 @@ namespace WindowsFormsApp1
         {
 
             listBox1.Items.Clear();
-            for (int j = 0; j < a.Length; j++)
+            for (int j = 0; j < targetfolder.Length; j++)
             {
-                if (a[j] != "Please Select a file")
+                if (targetfolder[j] != "Please Select a file")
                 {
-
-                    listBox1.Items.Add(a[j].ToString());
+                    //Add target folder to the listbox1
+                    listBox1.Items.Add(targetfolder[j].ToString());
                 }
             }
 
@@ -117,12 +116,13 @@ namespace WindowsFormsApp1
         private void button3_Click(object sender, EventArgs e)
         {
             listBox3.Items.Clear();
-
-            for (int j = 0; j < a.Length; j++)
+            
+            for (int j = 0; j < targetfolder.Length; j++)
             {
-                if (a[j] != "Please Select a file")
+                if (targetfolder[j] != "Please Select a file")
                 {
-                    string[] files = Directory.GetFiles(a[j]);
+                    string[] files = Directory.GetFiles(targetfolder[j]);
+                    //Adding sorted files to the listbox
                     foreach (string file2 in files)
                     {
                         string name2 = Path.GetFileName(file2);
@@ -144,10 +144,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e){}
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -289,6 +286,11 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Calculations are Completed");
 
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
