@@ -214,13 +214,10 @@ namespace WindowsFormsApp1
 
                         StreamReader sr = new StreamReader(file);
                         string Cname = Path.GetFileName(file);
-                        //     answerfile = string.Format("{0}-{1}",Cname,answerfile);
-
-                        // StreamWriter sw = new StreamWriter(answerfile);
                         using (StreamWriter sw = new StreamWriter(answerfile, true))
                         {
                             sw.WriteLine("---------------------------------------");
-                            while (sr.Peek() > 0)
+                            while (sr.Peek() > 0)//loop runs till end of the file
                             {
                                 str = sr.ReadLine();
                                 List = str.Split(' ');
@@ -231,8 +228,8 @@ namespace WindowsFormsApp1
                                     switch (List[i])
                                     {
                                         case "+":
-                                            j = i - 1;
-                                            k = i + 1;
+                                         j = i - 1;
+                                          k = i + 1;
                                             result = Convert.ToDecimal(List[j]) + Convert.ToDecimal(List[k]);
                                             //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
@@ -272,7 +269,7 @@ namespace WindowsFormsApp1
                                             // Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], resul);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(resul, 2));
                                             break;
-
+                                            
                                     }
 
                                 }
@@ -283,7 +280,7 @@ namespace WindowsFormsApp1
                         }
                     }
                 }
-                MessageBox.Show("Calculations are Completed");
+                MessageBox.Show("Calculations are Completed!");
 
             }
         }
@@ -291,6 +288,14 @@ namespace WindowsFormsApp1
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+            listBox2.Items.Clear();
+            listBox3.Items.Clear();
+            listBox4.Items.Clear();
         }
     }
 }
