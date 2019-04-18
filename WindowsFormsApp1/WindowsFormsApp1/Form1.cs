@@ -77,7 +77,7 @@ namespace WindowsFormsApp1
                             string list = List[i].Replace(".", String.Empty);
                             List[i] = list;
                             
-                        }
+                        }//To handle Financial Values
                         bool currency = List[i].StartsWith("$");
                         if (currency)
                         {
@@ -111,7 +111,6 @@ namespace WindowsFormsApp1
                             sw.WriteLine("{0},{1} ", num, counter);
                         }
                     }
-
                     sr.Close();
                     sw.Close();
                 }
@@ -121,7 +120,6 @@ namespace WindowsFormsApp1
 
         private void button2_Click(object sender, EventArgs e)
         {
-
             listBox1.Items.Clear();
             for (int j = 0; j < targetfolder.Length; j++)
             {
@@ -199,9 +197,7 @@ namespace WindowsFormsApp1
         private void button4_Click(object sender, EventArgs e)
         {
 
-            /* Calculator f2 = new Calculator();
-             f2.ShowDialog();*/
-            string source = @"C:\Users\paul dinesh\Desktop\Calculator";
+            string source = @"C:\";
 
             //Folder Browser Dialog Box
             FolderBrowserDialog fbd = new FolderBrowserDialog();
@@ -210,8 +206,6 @@ namespace WindowsFormsApp1
             {
                 source = fbd.SelectedPath;
                 MessageBox.Show(source);
-
-
                 //Get directories
                 string[] files = Directory.GetFiles(source);
 
@@ -232,7 +226,6 @@ namespace WindowsFormsApp1
                     //Checks for .calc file
                     if (ext == ".calc")
                     {
-
                         StreamReader sr = new StreamReader(file);
                         string Cname = Path.GetFileName(file);
                         using (StreamWriter sw = new StreamWriter(answerfile, true))
@@ -242,7 +235,6 @@ namespace WindowsFormsApp1
                             {
                                 str = sr.ReadLine();
                                 List = str.Split(' ');
-
                                 for (int i = 0; i < List.Length; i++)
                                 {
                                     int j, k;
@@ -252,57 +244,47 @@ namespace WindowsFormsApp1
                                          j = i - 1;
                                           k = i + 1;
                                             result = Convert.ToDecimal(List[j]) + Convert.ToDecimal(List[k]);
-                                            //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
-                                            sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
+                                           sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
                                             break;
                                         case "-":
                                             j = i - 1;
                                             k = i + 1;
                                             result = Convert.ToDecimal(List[j]) - Convert.ToDecimal(List[k]);
-                                            //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result[0]);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
                                             break;
                                         case "*":
                                             j = i - 1;
                                             k = i + 1;
                                             result = Convert.ToDecimal(List[j]) * Convert.ToDecimal(List[k]);
-                                            // Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
                                             break;
                                         case "/":
                                             j = i - 1;
                                             k = i + 1;
                                             result = Convert.ToDecimal(List[j]) / Convert.ToDecimal(List[k]);
-                                            //Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
                                             break;
                                         case "%":
                                             j = i - 1;
                                             k = i + 1;
                                             result = Convert.ToDecimal(List[j]) % Convert.ToDecimal(List[k]);
-                                            //  Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], result);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(result, 2));
                                             break;
                                         case "^":
                                             j = i - 1;
                                             k = i + 1;
                                             double resul = Math.Pow(Convert.ToDouble(List[j]), Convert.ToDouble(List[k]));
-                                            // Console.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], resul);
                                             sw.WriteLine("{0}{1}{2}={3}", List[j], List[i], List[k], Math.Round(resul, 2));
-                                            break;
-                                            
+                                            break;                                            
                                     }
-
                                 }
                             }
-
                             sr.Close();
                             sw.Close();
                         }
                     }
                 }
                 MessageBox.Show("Calculations are Completed!");
-
             }
         }
 
