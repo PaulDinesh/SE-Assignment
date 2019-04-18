@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace WindowsFormsApp1
 {
@@ -38,7 +39,7 @@ namespace WindowsFormsApp1
             }
 
             string str, destFile = "";
-            char[] delimiterChars = { ' ', ',', '.', ':', '\t', ';' };
+            char[] delimiterChars = {' ', ',', ':', '\t' };
             string[] List;
             int j;
 
@@ -65,10 +66,30 @@ namespace WindowsFormsApp1
                     StreamWriter sw = new StreamWriter(destFile);
                     str = sr.ReadToEnd();
                     //Spliting of line into words
-                    List = str.Split(delimiterChars);
                     
+                    List = str.Split(delimiterChars,StringSplitOptions.RemoveEmptyEntries);
+
+                    //To Remove full stop at the end of the line
+                    for(int i=0;i<List.Length;i++)
+                    {   bool contains = List[i].EndsWith(".");
+                        if (contains)
+                        {                             
+                            string list = List[i].Replace(".", String.Empty);
+                            List[i] = list;
+                            
+                        }
+                        bool currency = List[i].StartsWith("$");
+                        if (currency)
+                        {
+                            string c = List[i].TrimStart('$');
+                            Console.WriteLine(c);
+                        }
+                        
+                    }
+                   
                     //Sorting of the array
                     Array.Sort(List);
+                    
                     //No. of occurence
                     for (int i = 0; i < List.Length; i = j)
                     {
