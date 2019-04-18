@@ -116,6 +116,7 @@ namespace WindowsFormsApp1
                 }
             }
 
+            MessageBox.Show("All the files are Sorted!");
         }
 
         private void button2_Click(object sender, EventArgs e)
